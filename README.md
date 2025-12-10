@@ -1,3 +1,3 @@
-dist-lib
-========
-README text here.
+# dist-lib
+
+Racket library for distance-based algorithms
