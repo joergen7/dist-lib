@@ -1,0 +1,54 @@
+#lang racket/base
+
+(require
+ racket/class
+ racket/set
+ racket/match
+ "abstract-dist-matrix.rkt")
+
+(provide
+ hash-dist-matrix%)
+
+(define hash-dist-matrix%
+  (class abstract-dist-matrix%
+    (super-new)
+
+    (init-field
+     dist-table
+     merge-strategy)
+
+    (define/override (get-depth a)
+      0.0)
+
+    (define/override (get-dist a b)
+      (cond
+        [(equal? a b)
+         0.0]
+        [(hash-has-key? dist-table (cons a b))
+         (hash-ref dist-table (cons a b))]
+        [else
+         (hash-ref dist-table (cons b a))]))
+
+    (define/override (get-elem-set)
+      (for/fold
+          ([result (set)])
+          ([pair (in-list (hash-keys dist-table))])
+        (match pair
+          [(cons a b)
+           (set-add (set-add result a) b)])))
+
+    (define/override (get-leaf)
+      this)
+
+    (define/override (get-leaf-elem-set a)
+      (set a))
+
+    (define/override (get-max-dist)
+      (apply max (hash-values dist-table)))
+    
+    (define/override (get-merge-strategy)
+      merge-strategy)
+
+    (define/override (get-tree a)
+      a)))
+
