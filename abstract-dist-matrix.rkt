@@ -69,8 +69,7 @@
       (send result get-tree root))
     
     (define/private (get-pair-list)
-
-      (define (comb l)
+      (let recur ([l (set->list (get-elem-set))])
         (cond
           [(null? l)
            '()]
@@ -82,9 +81,8 @@
            (append
             (for/list ([y (in-list l1)])
               (cons x y))
-            (comb l1))]))
+            (recur l1))])))))
 
-      (comb (set->list (get-elem-set))))))
 
 
 (define merge-dist-matrix%

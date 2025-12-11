@@ -6,8 +6,13 @@
    racket/class
    racket/set
    rackunit
+   "../tree.rkt"
    "../hash-dist-matrix.rkt"
    "../min-merge-strategy.rkt")
+
+  (define (pair-equal? a b)
+    (or (equal? a b)
+        (equal? a (cons (cdr b) (car b)))))
 
   (define dist-table
     (hash (cons "a" "b") 17.0
@@ -26,7 +31,6 @@
          [dist-table     dist-table]
          [merge-strategy min-merge-strategy]))
 
-  #|
   (check-equal?
    (send dm-min get-dist "a" "b")
    17.0)
@@ -52,9 +56,9 @@
    0.0)
 
   (let ([min-pair (send dm-min get-min-pair)])
-    (check-equal? (set (car min-pair) (cdr min-pair))
-                  (set "a" "b")))
+    (check-true (pair-equal? min-pair (cons "a" "b"))))
 
-  |#
-  (displayln (send dm-min get-tree-root))
+  (let ([tree (send dm-min get-tree-root)])
+    (check-equal? (tree-elem-set tree)
+                  (set "a" "b" "c" "d" "e")))
   )
