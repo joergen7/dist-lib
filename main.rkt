@@ -1,26 +1,40 @@
 #lang racket/base
 
 (require
- "distance.rkt"
- "tree.rkt"
- "dist-matrix.rkt"
  "abstract-dist-matrix.rkt"
- "hash-dist-matrix.rkt"
+ "abstract-dp-table.rkt"
+ "cache-dp-strategy.rkt"
  "cache-merge-strategy.rkt"
- "min-merge-strategy.rkt"
+ "distance.rkt"
+ "dist-matrix.rkt"
+ "dp-table.rkt"
+ "edit-script.rkt"
+ "hash-dist-matrix.rkt"
+ "levenshtein-dp-strategy.rkt"
  "max-merge-strategy.rkt"
- "wpgma-merge-strategy.rkt"
- "upgma-merge-strategy.rkt")
+ "min-merge-strategy.rkt"
+ "stream-dp-table.rkt"
+ "string-dp-table.rkt"
+ "tree.rkt"
+ "upgma-merge-strategy.rkt"
+ "wpgma-merge-strategy.rkt")
 
 (provide
  (all-from-out
-  "distance.rkt"
-  "tree.rkt"
-  "dist-matrix.rkt"
   "abstract-dist-matrix.rkt"
-  "hash-dist-matrix.rkt"
+  "abstract-dp-table.rkt"
+  "cache-dp-strategy.rkt"
   "cache-merge-strategy.rkt"
-  "min-merge-strategy.rkt"
+  "distance.rkt"
+  "dist-matrix.rkt"
+  "dp-table.rkt"
+  "edit-script.rkt"
+  "hash-dist-matrix.rkt"
+  "levenshtein-dp-strategy.rkt"
   "max-merge-strategy.rkt"
-  "wpgma-merge-strategy.rkt"
-  "upgma-merge-strategy.rkt"))
+  "min-merge-strategy.rkt"
+  "stream-dp-table.rkt"
+  "string-dp-table.rkt"
+  "tree.rkt"
+  "upgma-merge-strategy.rkt"
+  "wpgma-merge-strategy.rkt"))

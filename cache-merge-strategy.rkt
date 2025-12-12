@@ -7,7 +7,7 @@
 
 (provide
  cache-merge-strategy%
- cache)
+ cache-merge-strategy)
 
 (define cache-merge-strategy%
   (class* object% (merge-strategy<%>)
@@ -29,7 +29,7 @@
          (hash-set! cache key dist)
          dist]))))
 
-(define/contract (cache merge-strategy)
+(define/contract (cache-merge-strategy merge-strategy)
   (-> (is-a?/c merge-strategy<%>) (is-a?/c merge-strategy<%>))
   (new cache-merge-strategy%
        [merge-strategy merge-strategy]))

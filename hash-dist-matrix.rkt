@@ -4,7 +4,8 @@
  racket/class
  racket/set
  racket/match
- "abstract-dist-matrix.rkt")
+ "abstract-dist-matrix.rkt"
+ "wpgma-merge-strategy.rkt")
 
 (provide
  hash-dist-matrix%)
@@ -15,12 +16,12 @@
 
     (init-field
      dist-table
-     merge-strategy)
+     [merge-strategy wpgma-merge-strategy])
 
     (define/override (get-depth a)
       0.0)
 
-    (define/override (get-dist a b)
+    (define/override (get-elem-dist a b)
       (cond
         [(equal? a b)
          0.0]
@@ -37,18 +38,16 @@
           [(cons a b)
            (set-add (set-add result a) b)])))
 
-    (define/override (get-leaf)
-      this)
-
-    (define/override (get-leaf-elem-set a)
-      (set a))
-
+    (define/override (get-leaf-count a)
+      1)
+    
     (define/override (get-max-dist)
       (apply max (hash-values dist-table)))
     
     (define/override (get-merge-strategy)
       merge-strategy)
 
-    (define/override (get-tree a)
+    (define/override (get-elem-tree a)
       a)))
+
 

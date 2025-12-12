@@ -6,7 +6,8 @@
 
 (provide
  tree/c
- tree-elem-set)
+ tree-elem-set
+ tree-equal?)
 
 (define tree/c
   (recursive-contract
@@ -21,3 +22,29 @@
     [else
      (set-union (tree-elem-set (list-ref tree 0))
                 (tree-elem-set (list-ref tree 2)))]))
+
+(define/contract (tree-equal? a b)
+  (-> tree/c tree/c boolean?)
+  (or
+   (and (string? a)
+        (string? b)
+        (equal? a b))
+   (and (list? a)
+        (list? b)
+        (or
+         (and (tree-equal? (list-ref a 0)
+                           (list-ref b 0))
+              (= (list-ref a 1)
+                 (list-ref b 1))
+              (tree-equal? (list-ref a 2)
+                           (list-ref b 2))
+              (= (list-ref a 3)
+                 (list-ref b 3)))
+         (and (tree-equal? (list-ref a 0)
+                           (list-ref b 2))
+              (= (list-ref a 1)
+                 (list-ref b 3))
+              (tree-equal? (list-ref a 2)
+                           (list-ref b 0))
+              (= (list-ref a 3)
+                 (list-ref b 1)))))))

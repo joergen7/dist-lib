@@ -18,16 +18,15 @@
 (define dist-matrix<%>
   (interface ()
     [get-depth          (->m string? distance?)]
-    [get-dist           (->m string? string? distance?)]
     [get-elem-count     (->m natural?)]
+    [get-elem-dist      (->m string? string? distance?)]
     [get-elem-set       (->m (set/c string?))]
-    [get-leaf           (recursive-contract (->m (is-a?/c dist-matrix<%>)))]
-    [get-leaf-elem-set  (->m string? (set/c string?))]
+    [get-elem-tree      (->m string? tree/c)]
+    [get-leaf-count     (->m string? natural?)]
     [get-max-dist       (->m distance?)]
     [get-merge-strategy (recursive-contract (->m (is-a?/c merge-strategy<%>)))]
     [get-min-pair       (->m (cons/c string? string?))]
-    [get-tree-root      (->m tree/c)]
-    [get-tree           (->m string? tree/c)]
+    [get-tree           (->m tree/c)]
     [merge              (recursive-contract (->m string? string? (is-a?/c dist-matrix<%>)))]
     [reduce             (recursive-contract (->m (is-a?/c dist-matrix<%>)))]))
 

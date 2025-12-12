@@ -8,7 +8,10 @@
    rackunit
    "../tree.rkt"
    "../hash-dist-matrix.rkt"
-   "../min-merge-strategy.rkt")
+   "../min-merge-strategy.rkt"
+   "../max-merge-strategy.rkt"
+   "../upgma-merge-strategy.rkt"
+   "../wpgma-merge-strategy.rkt")
 
   (define (pair-equal? a b)
     (or (equal? a b)
@@ -32,19 +35,19 @@
          [merge-strategy min-merge-strategy]))
 
   (check-equal?
-   (send dm-min get-dist "a" "b")
+   (send dm-min get-elem-dist "a" "b")
    17.0)
 
   (check-equal?
-   (send dm-min get-dist "b" "a")
+   (send dm-min get-elem-dist "b" "a")
    17.0)
 
   (check-equal?
-   (send dm-min get-dist "a" "a")
+   (send dm-min get-elem-dist "a" "a")
    0.0)
 
   (check-equal?
-   (send dm-min get-dist "b" "b")
+   (send dm-min get-elem-dist "b" "b")
    0.0)
 
   (check-equal?
@@ -58,7 +61,36 @@
   (let ([min-pair (send dm-min get-min-pair)])
     (check-true (pair-equal? min-pair (cons "a" "b"))))
 
-  (let ([tree (send dm-min get-tree-root)])
-    (check-equal? (tree-elem-set tree)
-                  (set "a" "b" "c" "d" "e")))
-  )
+
+  (check-true
+   (tree-equal? (send dm-min get-tree)
+                '(("e" 10.5 ("c" 10.5 ("a" 8.5 "b" 8.5) 2.0) 0.0) 3.5 "d" 14.0)))
+
+  (define dm-max
+    (new hash-dist-matrix%
+         [dist-table     dist-table]
+         [merge-strategy max-merge-strategy]))
+
+  (check-true
+   (tree-equal? (send dm-max get-tree)
+                '(("c" 14.0 "d" 14.0) 7.5 ("e" 11.5 ("a" 8.5 "b" 8.5) 3.0) 10.0)))
+
+
+  (define dm-upgma
+    (new hash-dist-matrix%
+         [dist-table     dist-table]
+         [merge-strategy upgma-merge-strategy]))
+
+  (check-true
+   (tree-equal? (send dm-upgma get-tree)
+                '((("a" 8.5 "b" 8.5) 2.5 "e" 11.0) 5.5 ("c" 14.0 "d" 14.0) 2.5)))
+
+  (define dm-wpgma
+    (new hash-dist-matrix%
+         [dist-table     dist-table]
+         [merge-strategy wpgma-merge-strategy]))
+
+  (check-true
+   (tree-equal? (send dm-wpgma get-tree)
+                '((("a" 8.5 "b" 8.5) 2.5 "e" 11.0) 6.5 ("c" 14.0 "d" 14.0) 3.5)))
+)

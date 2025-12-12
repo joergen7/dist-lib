@@ -15,8 +15,8 @@
     (super-new)
 
     (define/public (get-dist parent merge-pair b)
-      (max (send parent get-dist (car merge-pair) b)
-           (send parent get-dist (cdr merge-pair) b)))))
+      (max (send parent get-elem-dist (car merge-pair) b)
+           (send parent get-elem-dist (cdr merge-pair) b)))))
 
 (define max-merge-strategy
-  (cache (new max-merge-strategy%)))
+  (cache-merge-strategy (new max-merge-strategy%)))

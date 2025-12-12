@@ -15,8 +15,8 @@
 
     (define/public (get-dist parent merge-pair b)
       (* 0.5
-         (+ (send parent get-dist (car merge-pair) b)
-            (send parent get-dist (cdr merge-pair) b))))))
+         (+ (send parent get-elem-dist (car merge-pair) b)
+            (send parent get-elem-dist (cdr merge-pair) b))))))
 
 (define wpgma-merge-strategy
-  (cache (new wpgma-merge-strategy%)))
+  (cache-merge-strategy (new wpgma-merge-strategy%)))

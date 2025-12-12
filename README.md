@@ -10,3 +10,16 @@ Racket library for distance-based algorithms
 
     #lang racket/base
     (require dist-lib)
+
+## Features
+
+### Hierarchical Clustering
+
+- min
+- max
+- WPGMA
+- UPGMA
+
+### Dynamic Programming
+
+- Levenshtein distance

@@ -15,23 +15,24 @@
     (super-new)
 
     (define/public (get-dist parent merge-pair b)
-      (define leaf
-        (send parent get-leaf))
-      (define set1
-        (set-union (send parent get-leaf-elem-set (car merge-pair))
-                   (send parent get-leaf-elem-set (cdr merge-pair))))
-      (define set2
-        (send parent get-leaf-elem-set b))
-      ;; we can safely assume these sets are never empty
-      (define v
-        (for/sum ([x (in-set set1)])
-          (for/sum ([y (in-set set2)])
-            (send leaf get-dist x y))))
-    
-      (/ v
-         (exact->inexact
-          (* (set-count set1)
-             (set-count set2)))))))
+      (define dist1
+        (send parent get-elem-dist (car merge-pair) b))
+      (define dist2
+        (send parent get-elem-dist (cdr merge-pair) b))
+      (define count1
+        (send parent get-leaf-count (car merge-pair)))
+      (define count2
+        (send parent get-leaf-count (cdr merge-pair)))
+      (define count3
+        (send parent get-leaf-count b))
+      (define raw-dist1
+        (* count1 count3 dist1))
+      (define raw-dist2
+        (* count2 count3 dist2))
+      (define count4
+        (* (+ count1 count2) count3))
+      (/ (+ raw-dist1 raw-dist2) count4))))
+      
 
 (define upgma-merge-strategy
-  (cache (new upgma-merge-strategy%)))
+  (cache-merge-strategy (new upgma-merge-strategy%)))
