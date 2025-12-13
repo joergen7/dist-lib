@@ -8,8 +8,10 @@ A library for distance-based algorithms.
 
 ## Usage
 
-    #lang racket/base
-    (require dist-lib)
+```racket
+#lang racket/base
+(require dist-lib)
+```
 
 ## Features
 
