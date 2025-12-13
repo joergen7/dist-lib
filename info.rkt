@@ -1,6 +1,6 @@
 #lang info
 (define collection "dist-lib")
-(define deps '("base" "draw-lib"))
+(define deps '("base"))
 (define build-deps '("scribble-lib" "racket-doc" "rackunit-lib"))
 (define scribblings '(("scribblings/dist-lib.scrbl" ())))
 (define pkg-desc "A library for distance-based algorithms.")
