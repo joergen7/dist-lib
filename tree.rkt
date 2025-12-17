@@ -16,11 +16,13 @@
 
 (require
  racket/contract
+ racket/math
  racket/set)
 
 (provide
  tree/c
  tree-elem-set
+ tree-elem-count
  tree-equal?)
 
 (define tree/c
@@ -36,6 +38,10 @@
     [else
      (set-union (tree-elem-set (list-ref tree 0))
                 (tree-elem-set (list-ref tree 2)))]))
+
+(define/contract (tree-elem-count tree)
+  (-> tree/c natural?)
+  (set-count (tree-elem-set tree)))
 
 (define/contract (tree-equal? a b)
   (-> tree/c tree/c boolean?)
