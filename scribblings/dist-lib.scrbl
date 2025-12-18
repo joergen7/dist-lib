@@ -70,9 +70,9 @@ The end result of a hierarchical clustering is a dendogram tree.
   Predicate comparing two trees. Two trees are equal if they have the same structure, the same leaf labels, and the same depth annotation. Left and right subtrees are interchangeable.
 }
 
-@defclass[tree-image-factory% object% (image-factory<%>)]{
-  @defconstructor[([tree tree/c] [draw-labels boolean? #t] [width natural? 18])]{
-    Construct an instance of @racket[image-factory<%>] from a dendogram tree. If @racket[draw-labels] is @racket[#t] then labels are drawn on the leaves of the tree. The drawing algorithm normalizes the tree's depth to the value of @racket[width].
+@defclass[tree-image-factory/table% abstract-tree-image-factory% ()]{
+  @defconstructor[([tree tree/c] [draw-labels boolean? #t] [depth natural? 10])]{
+    Construct an instance of @racket[image-factory<%>] from a dendogram tree to be plotted in table form. If @racket[draw-labels] is @racket[#t] then labels are drawn on the leaves of the tree. The drawing algorithm normalizes the tree's depth to the value of @racket[depth].
   }
 
   @defmethod[(get-image) (is-a?/c image<%>)]{
@@ -80,6 +80,15 @@ The end result of a hierarchical clustering is a dendogram tree.
   }
 }
 
+@defclass[tree-image-factory/tree% abstract-tree-image-factory% ()]{
+  @defconstructor[([tree tree/c] [draw-labels boolean? #t] [depth natural? 10])]{
+    Construct an instance of @racket[image-factory<%>] from a dendogram tree to be plotted in tree form. If @racket[draw-labels] is @racket[#t] then labels are drawn on the leaves of the tree. The drawing algorithm normalizes the tree's depth to the value of @racket[depth].
+  }
+
+  @defmethod[(get-image) (is-a?/c image<%>)]{
+    Return the image constructed from the dendogram tree.
+  }
+}
 @subsection{Distance Matrices}
 
 The starting point of a hierarchical clustering is a distance matrix represented in form of a @racket[dist-matrix<%>] instance.

@@ -19,36 +19,31 @@
  racket/contract
  racket/math
  paint-lib
- "tree.rkt")
+ "tree.rkt"
+ "abstract-tree-image-factory.rkt")
 
 (provide
- tree-image-factory%)
+ tree-image-factory/table%)
 
-(define tree-image-factory%
-  (class* object% (image-factory<%>)
+(define tree-image-factory/table%
+  (class abstract-tree-image-factory%
     (super-new)
 
+    (inherit
+     label-path
+     get-depth-factor)
+
     (init-field
-     tree
-     [draw-labels #t]
-     [width       18])
+     tree)
 
-    (define factor
-      (/ width (tree-depth tree)))
-
-    (define/public (get-image)
+    (define/override (get-image)
       (apply make-image (get-path-list (make-path) tree)))
 
     (define/private (get-path-list path tree)
       (cond
         [(string? tree)
          (list
-          (with-path ((send path hatch))
-            (label
-             (if draw-labels
-                 tree
-                 "")
-             1)))]
+          (label-path path tree))]
         [else
          (define lhs
            (list-ref tree 0))
@@ -67,7 +62,9 @@
              (turn (* 1/2 pi))
              (forward (* 0.7 lhs-width))
              (turn (* -1/2 pi))
-             (forward (* factor lhs-depth))))
+             (forward
+              (* (get-depth-factor tree)
+                 lhs-depth))))
          (define lhs-child-path-list
            (get-path-list lhs-stem-path lhs))
          (define rhs-stem-path
@@ -75,7 +72,9 @@
              (turn (* -1/2 pi))
              (forward (* 0.7 rhs-width))
              (turn (* 1/2 pi))
-             (forward (* factor rhs-depth))))
+             (forward
+              (* (get-depth-factor tree)
+                 rhs-depth))))
          (define rhs-child-path-list
            (get-path-list rhs-stem-path rhs))
          (append (list lhs-stem-path

@@ -17,6 +17,7 @@
 (require
  "abstract-dist-matrix.rkt"
  "abstract-dp-table.rkt"
+ "abstract-tree-image-factory.rkt"
  "cache-dp-strategy.rkt"
  "cache-merge-strategy.rkt"
  "distance.rkt"
@@ -30,6 +31,8 @@
  "stream-dp-table.rkt"
  "string-dp-table.rkt"
  "tree.rkt"
+ "tree-image-factory-table.rkt"
+ "tree-image-factory-tree.rkt"
  "upgma-merge-strategy.rkt"
  "wpgma-merge-strategy.rkt")
 
@@ -37,6 +40,7 @@
  (all-from-out
   "abstract-dist-matrix.rkt"
   "abstract-dp-table.rkt"
+  "abstract-tree-image-factory.rkt"
   "cache-dp-strategy.rkt"
   "cache-merge-strategy.rkt"
   "distance.rkt"
@@ -50,5 +54,7 @@
   "stream-dp-table.rkt"
   "string-dp-table.rkt"
   "tree.rkt"
+  "tree-image-factory-table.rkt"
+  "tree-image-factory-tree.rkt"
   "upgma-merge-strategy.rkt"
   "wpgma-merge-strategy.rkt"))

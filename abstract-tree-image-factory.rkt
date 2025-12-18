@@ -14,30 +14,35 @@
 
 #lang racket/base
 
-(module+ test
-  (require
-   racket/class
-   paint-lib
-   "../tree-image-factory-table.rkt"
-   "../tree-image-factory-tree.rkt")
+(require
+ racket/class
+ paint-lib
+ "tree.rkt")
 
-  (define tree
-    '((("example a" 8.5 "example b" 8.5) 2.5 "example e" 11.0) 6.5 ("example c" 14.0 "example d" 14.0) 3.5))
+(provide
+ abstract-tree-image-factory%)
 
-  (define image-factory/table
-    (new tree-image-factory/table%
-         [tree tree]))
+(define abstract-tree-image-factory%
+  (class* object% (image-factory<%>)
+    (super-new)
 
-  (define image/table
-    (send image-factory/table get-image))
+    (abstract
+     get-image)
 
-  (get-bitmap image/table 400)
+    (init-field
+     [draw-labels #t]
+     [depth       10])
 
-  (define image-factory/tree
-    (new tree-image-factory/tree%
-         [tree tree]))
+    (define/public (get-depth-factor tree)
+      (/ depth (tree-depth tree)))
 
-  (define image/tree
-    (send image-factory/tree get-image))
+    (define/public (label-path path tree)
+      (with-path (path)
+        (label
+         (if draw-labels
+             tree
+             "")
+         1)))))
 
-  (get-bitmap image/tree 600))
+
+     
