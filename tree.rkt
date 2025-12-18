@@ -16,13 +16,13 @@
 
 (require
  racket/contract
- racket/math
- racket/set)
+ racket/math)
 
 (provide
  tree/c
- tree-elem-set
+ tree-elem-list
  tree-elem-count
+ tree-depth
  tree-equal?)
 
 (define tree/c
@@ -30,18 +30,27 @@
    (or/c string?
          (list/c tree/c rational? tree/c rational?))))
 
-(define/contract (tree-elem-set tree)
-  (-> tree/c (set/c string?))
+(define/contract (tree-elem-list tree)
+  (-> tree/c (listof string?))
   (cond
     [(string? tree)
-     (set tree)]
+     (list tree)]
     [else
-     (set-union (tree-elem-set (list-ref tree 0))
-                (tree-elem-set (list-ref tree 2)))]))
+     (append (tree-elem-list (list-ref tree 0))
+             (tree-elem-list (list-ref tree 2)))]))
 
 (define/contract (tree-elem-count tree)
   (-> tree/c natural?)
-  (set-count (tree-elem-set tree)))
+  (length (tree-elem-list tree)))
+
+(define/contract (tree-depth tree)
+  (-> tree/c rational?)
+  (cond
+    [(string? tree)
+     0.0]
+    [else
+     (+ (cadr tree)
+        (tree-depth (car tree)))]))
 
 (define/contract (tree-equal? a b)
   (-> tree/c tree/c boolean?)

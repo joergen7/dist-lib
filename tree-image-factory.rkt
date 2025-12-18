@@ -29,50 +29,62 @@
     (super-new)
 
     (init-field
-     tree)
+     tree
+     [include-labels #t]
+     [width          18])
+
+    (define factor
+      (/ width (tree-depth tree)))
 
     (define/public (get-image)
-      (apply make-image (get-path-list (make-path) tree)))))
+      (apply make-image (get-path-list (make-path) tree)))
+
+    (define/private (get-path-list path tree)
+      (cond
+        [(string? tree)
+         (list
+          (with-path ((send path hatch))
+            (label
+             (if include-labels
+                 tree
+                 "")
+             1)))]
+        [else
+         (define stem-width
+           (tree-elem-count tree))
+         (define lhs
+           (list-ref tree 0))
+         (define lhs-depth
+           (list-ref tree 1))
+         (define lhs-width
+           (tree-elem-count lhs))
+         (define rhs
+           (list-ref tree 2))
+         (define rhs-depth
+           (list-ref tree 3))
+         (define rhs-width
+           (tree-elem-count rhs))
+         (define lhs-stem-path
+           (with-path ((send path hatch))
+             (turn (* 1/2 pi))
+             (forward (* 0.7 lhs-width))
+             (turn (* -1/2 pi))
+             (forward (* factor lhs-depth))))
+         (define lhs-child-path-list
+           (get-path-list lhs-stem-path lhs))
+         (define rhs-stem-path
+           (with-path ((send path hatch))
+             (turn (* -1/2 pi))
+             (forward (* 0.7 rhs-width))
+             (turn (* 1/2 pi))
+             (forward (* factor rhs-depth))))
+         (define rhs-child-path-list
+           (get-path-list rhs-stem-path rhs))
+         (append (list lhs-stem-path
+                       rhs-stem-path)
+                 lhs-child-path-list
+                 rhs-child-path-list)]))))
 
 
-(define/contract (get-path-list path tree)
-  (-> (is-a?/c path<%>) tree/c (listof (is-a?/c path<%>)))
-  (cond
-    [(string? tree)
-     (list
-      (with-path ((send path hatch))
-        (label tree 1)))]
-    [else
-     (define lhs
-       (list-ref tree 0))
-     (define lhs-depth
-       (list-ref tree 1))
-     (define lhs-width
-       (tree-elem-count lhs))
-     (define rhs
-       (list-ref tree 2))
-     (define rhs-depth
-       (list-ref tree 3))
-     (define rhs-width
-       (tree-elem-count rhs))
-     (define lhs-stem-path
-       (with-path ((send path hatch))
-         (turn (* 1/2 pi))
-         (forward (* 0.7 lhs-width))
-         (turn (* -1/2 pi))
-         (forward lhs-depth)))
-     (define lhs-child-path-list
-       (get-path-list lhs-stem-path lhs))
-     (define rhs-stem-path
-       (with-path ((send path hatch))
-         (turn (* -1/2 pi))
-         (forward (* 0.7 rhs-width))
-         (turn (* 1/2 pi))
-         (forward rhs-depth)))
-     (define rhs-child-path-list
-       (get-path-list rhs-stem-path rhs))
-     (append (list lhs-stem-path
-                   rhs-stem-path)
-             lhs-child-path-list
-             rhs-child-path-list)]))
+
                       
