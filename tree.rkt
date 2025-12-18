@@ -23,6 +23,8 @@
  tree-elem-list
  tree-elem-count
  tree-depth
+ tree-level-left
+ tree-level-right
  tree-equal?)
 
 (define tree/c
@@ -51,6 +53,22 @@
     [else
      (+ (cadr tree)
         (tree-depth (car tree)))]))
+
+(define/contract (tree-level-left tree)
+  (-> tree/c natural?)
+  (cond
+    [(string? tree)
+     0]
+    [else
+     (add1 (tree-level-left (car tree)))]))
+
+(define/contract (tree-level-right tree)
+  (-> tree/c natural?)
+  (cond
+    [(string? tree)
+     0]
+    [else
+     (add1 (tree-level-right (caddr tree)))]))
 
 (define/contract (tree-equal? a b)
   (-> tree/c tree/c boolean?)

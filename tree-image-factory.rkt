@@ -30,8 +30,8 @@
 
     (init-field
      tree
-     [include-labels #t]
-     [width          18])
+     [draw-labels #t]
+     [width       18])
 
     (define factor
       (/ width (tree-depth tree)))
@@ -45,25 +45,23 @@
          (list
           (with-path ((send path hatch))
             (label
-             (if include-labels
+             (if draw-labels
                  tree
                  "")
              1)))]
         [else
-         (define stem-width
-           (tree-elem-count tree))
          (define lhs
            (list-ref tree 0))
          (define lhs-depth
            (list-ref tree 1))
          (define lhs-width
-           (tree-elem-count lhs))
+           (add1 (tree-level-right lhs)))
          (define rhs
            (list-ref tree 2))
          (define rhs-depth
            (list-ref tree 3))
          (define rhs-width
-           (tree-elem-count rhs))
+           (add1 (tree-level-left rhs)))
          (define lhs-stem-path
            (with-path ((send path hatch))
              (turn (* 1/2 pi))
@@ -85,6 +83,3 @@
                  lhs-child-path-list
                  rhs-child-path-list)]))))
 
-
-
-                      
