@@ -25,7 +25,7 @@
  edit-script-equal?)
 
 (define edit-script?
-  (listof (list/c (symbols 'match 'ins 'del) distance?)))
+  (listof (list/c (symbols 'match 'ins 'del) rational?)))
 
 (define/contract (edit-script-dist edit-script)
   (-> edit-script? distance?)

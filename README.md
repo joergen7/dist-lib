@@ -25,6 +25,7 @@ A library for distance-based algorithms.
 ### Dynamic Programming
 
 - Levenshtein distance
+- Longest Common Subsequence (LCS)
 
 ## License
 

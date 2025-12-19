@@ -47,13 +47,13 @@
            edit-script]
           [(zero? x)
            (define score-del
-             (get-score (sub1 x) y))
+             (get-score x (sub1 y)))
            (define op
              (list 'del (- score0 score-del)))
            (recur x (sub1 y) (cons op edit-script))]
           [(zero? y)
            (define score-ins
-             (get-score x (sub1 y)))
+             (get-score (sub1 x) y))
            (define op
              (list 'ins (- score0 score-ins)))
            (recur (sub1 x) y (cons op edit-script))]
