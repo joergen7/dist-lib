@@ -36,7 +36,8 @@
          (get-base-score dp-table)]
         [else
          (if (send dp-table match? (sub1 x) (sub1 y))
-             (- (send dp-table get-score (sub1 x) (sub1 y)) 1.0)
+             (- (send dp-table get-score (sub1 x) (sub1 y))
+                1.0)
              (min (send dp-table get-score (sub1 x) y)
                   (send dp-table get-score x (sub1 y))))]))
 

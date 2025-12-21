@@ -45,18 +45,18 @@
           [(and (zero? x)
                 (zero? y))
            edit-script]
-          [(zero? x)
-           (define score-del
-             (get-score x (sub1 y)))
-           (define op
-             (list 'del (- score0 score-del)))
-           (recur x (sub1 y) (cons op edit-script))]
           [(zero? y)
-           (define score-ins
+           (define score-del
              (get-score (sub1 x) y))
            (define op
-             (list 'ins (- score0 score-ins)))
+             (list 'del (- score0 score-del)))
            (recur (sub1 x) y (cons op edit-script))]
+          [(zero? x)
+           (define score-ins
+             (get-score x (sub1 y)))
+           (define op
+             (list 'ins (- score0 score-ins)))
+           (recur x (sub1 y) (cons op edit-script))]
           [else
            (define score-del
              (get-score (sub1 x) y))
@@ -78,7 +78,7 @@
                [else
                 (values (sub1 x)
                         (sub1 y)
-                        (list 'match (- score0 score-match)))]))
+               (list 'match (- score0 score-match)))]))
            (recur x1 y1 (cons op edit-script))])))
 
     (define/public (get-score x y)

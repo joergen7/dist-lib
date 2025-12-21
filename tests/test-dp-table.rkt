@@ -18,6 +18,7 @@
 
   (require
    racket/class
+   racket/stream
    rackunit
    "../string-dp-table.rkt"
    "../lcs-dp-strategy.rkt"
@@ -45,7 +46,30 @@
                 2.0)
 
   (check-equal? (send dp-table2 get-edit-script)
-  '((match 0.0) (ins 1.0) (match 0.0) (match 1.0) (match 0.0)))
+                '((match 0.0) (ins 1.0) (match 0.0) (match 1.0) (match 0.0)))
 
-  )
+  (define dp-table3
+    (new string-dp-table%
+         [a "abc123"]
+         [b "321abc"]
+         [dp-strategy (lcs-dp-strategy)]))
+
+  (check-equal? (send dp-table3 get-dist)
+                3.0)
+
+  (check-equal? (send dp-table3 get-edit-script)
+                '((ins 0.0) (ins 0.0) (ins 0.0) (match -1.0) (match -1.0) (match -1.0) (del 0.0) (del 0.0) (del 0.0)))
+
+  (define dp-table4
+    (new string-dp-table%
+         [a "abc123"]
+         [b "321abc"]
+         [dp-strategy (levenshtein-dp-strategy)]))
+
+  (check-equal? (send dp-table4 get-dist)
+                6.0)
+
+  (check-equal? (send dp-table4 get-edit-script)
+                '((match 1.0) (match 1.0) (match 1.0) (match 1.0) (match 1.0) (match 1.0))))
+
          
