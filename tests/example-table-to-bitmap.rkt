@@ -22,7 +22,7 @@
    "../table-dist-matrix-factory.rkt"
    "../string-dp-table.rkt"
    "../tree-image-factory-table.rkt"
-   "../levenshtein-dp-strategy.rkt")
+   "../lcs-dp-strategy.rkt")
 
   (define table
     (hash "abba" "abba"
@@ -30,8 +30,6 @@
           "otto" "otto"
           "karo" "karo"
           "mama" "mama"
-          "papa" "papa"
-          "opa"  "opa"
           "oma"  "oma"
           "baba" "baba"
           "yeye" "yeye"
@@ -40,7 +38,7 @@
   (define dist-matrix-factory
     (new (table-dist-matrix-factory% string-dp-table%)
          [table table]
-         [dp-strategy (levenshtein-dp-strategy)]))
+         [dp-strategy (new lcs-dp-strategy%)]))
 
   (define dist-matrix
     (send dist-matrix-factory

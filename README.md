@@ -26,6 +26,7 @@ A library for distance-based algorithms.
 
 - Levenshtein distance
 - Longest Common Subsequence (LCS)
+- Manhattan distance
 
 ## License
 

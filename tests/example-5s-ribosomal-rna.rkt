@@ -46,7 +46,7 @@
   (define dm-min
     (new hash-dist-matrix%
          [dist-table     dist-table]
-         [merge-strategy min-merge-strategy]))
+         [merge-strategy (new min-merge-strategy%)]))
 
   (check-equal?
    (send dm-min get-elem-dist "a" "b")
@@ -83,7 +83,7 @@
   (define dm-max
     (new hash-dist-matrix%
          [dist-table     dist-table]
-         [merge-strategy max-merge-strategy]))
+         [merge-strategy (new max-merge-strategy%)]))
 
   (check-true
    (tree-equal? (send dm-max get-tree)
@@ -93,7 +93,7 @@
   (define dm-upgma
     (new hash-dist-matrix%
          [dist-table     dist-table]
-         [merge-strategy upgma-merge-strategy]))
+         [merge-strategy (new upgma-merge-strategy%)]))
 
   (check-true
    (tree-equal? (send dm-upgma get-tree)
@@ -102,7 +102,7 @@
   (define dm-wpgma
     (new hash-dist-matrix%
          [dist-table     dist-table]
-         [merge-strategy wpgma-merge-strategy]))
+         [merge-strategy (new wpgma-merge-strategy%)]))
 
   (check-true
    (tree-equal? (send dm-wpgma get-tree)

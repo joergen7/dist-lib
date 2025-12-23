@@ -16,39 +16,39 @@
 
 (require
  racket/class
- racket/contract
- "distance.rkt"
  "dp-table.rkt")
 
 (provide
- levenshtein-dp-strategy%)
+ manhattan-dp-strategy%)
 
-(define levenshtein-dp-strategy%
+(define manhattan-dp-strategy%
   (class* object% (dp-strategy<%>)
     (super-new)
-
-    (init-field
-     [delta-ins   1.0]
-     [delta-del   1.0]
-     [delta-match 1.0])
 
     (define/public (get-score dp-table x y)
       (cond
         [(zero? x)
-         (* delta-ins (exact->inexact y))]
+         (exact->inexact y)]
         [(zero? y)
-         (* delta-del (exact->inexact x))]
+         (exact->inexact x)]
         [else
-         (define score-del
-           (+ (send dp-table get-score (sub1 x) y)
-              delta-del))
-         (define score-ins
-           (+ (send dp-table get-score x (sub1 y))
-              delta-ins))
          (define score-match
            (+ (send dp-table get-score (sub1 x) (sub1 y))
               (if (send dp-table match? (sub1 x) (sub1 y))
                   0.0
-                  delta-match)))
-         (min score-del score-ins score-match)]))))
-
+                  1.0)))
+         (cond
+           [(and (eq? (send dp-table get-length-a) x)
+                 (eq? (send dp-table get-length-b) y))
+            (min (+ 1.0 (send dp-table get-score x (sub1 y)))
+                 (+ 1.0 (send dp-table get-score (sub1 x) y))
+                 score-match)]
+           [(eq? (send dp-table get-length-a) x)
+            (min (+ 1.0 (send dp-table get-score x (sub1 y)))
+                 score-match)]
+           [(eq? (send dp-table get-length-b) y)
+            (min (+ 1.0 (send dp-table get-score (sub1 x) y))
+                 score-match)]
+           [else
+            score-match])]))))
+         

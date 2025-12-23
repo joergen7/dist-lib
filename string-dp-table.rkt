@@ -17,7 +17,7 @@
 (require
  racket/class
  "abstract-dp-table.rkt"
- "levenshtein-dp-strategy.rkt")
+ "lcs-dp-strategy.rkt")
 
 (provide
  string-dp-table%)
@@ -29,7 +29,7 @@
     (init-field
      a
      b
-     [dp-strategy (levenshtein-dp-strategy)])
+     [dp-strategy (new lcs-dp-strategy%)])
 
     (define/override (get-dp-strategy)
       dp-strategy)

@@ -26,6 +26,9 @@
   (class* object% (dp-table<%>)
     (super-new)
 
+    (define cache
+      (make-hash))
+    
     (abstract
      get-dp-strategy
      get-length-a
@@ -82,7 +85,16 @@
            (recur x1 y1 (cons op edit-script))])))
 
     (define/public (get-score x y)
-      (send (get-dp-strategy) get-score this x y))))
+      (define key
+        (cons x y))
+      (cond
+        [(hash-has-key? cache key)
+         (hash-ref cache key)]
+        [else
+         (define score
+           (send (get-dp-strategy) get-score this x y))
+         (hash-set! cache key score)
+         score]))))
 
 
 

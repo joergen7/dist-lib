@@ -28,7 +28,7 @@
     (new string-dp-table%
          [a "abcd"]
          [b "acbad"]
-         [dp-strategy (lcs-dp-strategy)]))
+         [dp-strategy (new lcs-dp-strategy%)]))
 
   (check-equal? (send dp-table1 get-dist)
                 2.0)
@@ -40,7 +40,7 @@
     (new string-dp-table%
          [a "abcd"]
          [b "acbad"]
-         [dp-strategy (levenshtein-dp-strategy)]))
+         [dp-strategy (new levenshtein-dp-strategy%)]))
 
   (check-equal? (send dp-table2 get-dist)
                 2.0)
@@ -52,7 +52,7 @@
     (new string-dp-table%
          [a "abc123"]
          [b "321abc"]
-         [dp-strategy (lcs-dp-strategy)]))
+         [dp-strategy (new lcs-dp-strategy%)]))
 
   (check-equal? (send dp-table3 get-dist)
                 3.0)
@@ -64,7 +64,7 @@
     (new string-dp-table%
          [a "abc123"]
          [b "321abc"]
-         [dp-strategy (levenshtein-dp-strategy)]))
+         [dp-strategy (new levenshtein-dp-strategy%)]))
 
   (check-equal? (send dp-table4 get-dist)
                 6.0)

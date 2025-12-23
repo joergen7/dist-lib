@@ -16,18 +16,22 @@
 
 (require
  racket/class
- racket/set
- "dist-matrix.rkt")
+ racket/contract
+ racket/string
+ rackunit
+ "../distance.rkt"
+ "../dp-table.rkt"
+ "../string-dp-table.rkt")
 
 (provide
- min-merge-strategy%)
+ make-check-dist)
 
-(define min-merge-strategy%
-  (class* object% (merge-strategy<%>)
-    (super-new)
-
-    (define/public (get-elem-dist parent merge-pair b)
-      (min (send parent get-elem-dist (car merge-pair) b)
-           (send parent get-elem-dist (cdr merge-pair) b)))))
-
-
+(define/contract (make-check-dist make-dp-strategy)
+  (-> (is-a?/c dp-strategy<%>) (-> string? string? distance? void?))
+  (lambda (a b dist)
+    (define dp
+      (new string-dp-table%
+           [a a]
+           [b b]
+           [dp-strategy make-dp-strategy]))
+    (check-= (send dp get-dist) dist 0.000001 (string-join (list a b)))))

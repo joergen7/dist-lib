@@ -33,7 +33,7 @@
     (new stream-dp-table%
          [a a]
          [b b]
-         [dp-strategy (levenshtein-dp-strategy)]))
+         [dp-strategy (new levenshtein-dp-strategy%)]))
 
   (check-true
    (edit-script-equal?
@@ -53,7 +53,7 @@
     (new stream-dp-table%
          [a c]
          [b d]
-         [dp-strategy (levenshtein-dp-strategy)]))
+         [dp-strategy (new levenshtein-dp-strategy%)]))
 
   (check-true
    (edit-script-equal?

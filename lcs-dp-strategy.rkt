@@ -17,12 +17,10 @@
 (require
  racket/class
  racket/contract
- "dp-table.rkt"
- "cache-dp-strategy.rkt")
+ "dp-table.rkt")
 
 (provide
- lcs-dp-strategy%
- lcs-dp-strategy)
+ lcs-dp-strategy%)
 
 (define lcs-dp-strategy%
   (class* object% (dp-strategy<%>)
@@ -46,10 +44,6 @@
        (max (send dp-table get-length-a)
             (send dp-table get-length-b))))))
 
-(define/contract (lcs-dp-strategy)
-  (-> (is-a?/c dp-strategy<%>))
-  (cache-dp-strategy
-   (new lcs-dp-strategy%)))
 
 
 

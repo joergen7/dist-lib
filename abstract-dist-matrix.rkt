@@ -106,6 +106,9 @@
      merge-name
      merge-pair)
 
+    (define cache
+      (make-hash))
+
     (define/override (get-depth a)
       (cond
         [(equal? a merge-name)
@@ -120,7 +123,14 @@
         [(equal? b merge-name)
          (get-elem-dist b a)]
         [(equal? a merge-name)
-         (send (get-merge-strategy) get-dist parent merge-pair b)]
+         (cond
+           [(hash-has-key? cache b)
+            (hash-ref cache b)]
+           [else
+            (define dist
+              (send (get-merge-strategy) get-elem-dist parent merge-pair b))
+            (hash-set! cache b dist)
+            dist])]
         [else
          (send parent get-elem-dist a b)]))
 

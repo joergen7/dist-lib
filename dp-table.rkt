@@ -38,4 +38,3 @@
 (define dp-strategy<%>
   (interface ()
     [get-score (->m (is-a?/c dp-table<%>) natural? natural? distance?)]))
-

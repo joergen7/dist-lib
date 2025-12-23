@@ -30,7 +30,7 @@
 
     (init-field
      dist-table
-     [merge-strategy wpgma-merge-strategy])
+     [merge-strategy (new wpgma-merge-strategy%)])
 
     (define/override (get-depth a)
       0.0)

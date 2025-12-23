@@ -30,7 +30,7 @@
     (init-field
      a
      b
-     [dp-strategy (lcs-dp-strategy)])
+     [dp-strategy (new lcs-dp-strategy%)])
 
     (define/override (get-dp-strategy)
       dp-strategy)

@@ -32,8 +32,8 @@
 
     (init-field
      table
-     [dp-strategy    (lcs-dp-strategy)]
-     [merge-strategy wpgma-merge-strategy])
+     [dp-strategy    (new lcs-dp-strategy%)]
+     [merge-strategy (new wpgma-merge-strategy%)])
 
     (define/public (get-dist-matrix)
       (define dist-table

@@ -46,4 +46,4 @@
 
 (define merge-strategy<%>
   (interface ()
-    [get-dist (->m (is-a?/c dist-matrix<%>) (cons/c string? string?) string? distance?)]))
+    [get-elem-dist (->m (is-a?/c dist-matrix<%>) (cons/c string? string?) string? distance?)]))
