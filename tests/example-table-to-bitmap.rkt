@@ -21,7 +21,7 @@
    rackunit
    "../table-dist-matrix-factory.rkt"
    "../string-dp-table.rkt"
-   "../tree-image-factory-radial.rkt"
+   "../tree-image-factory-table.rkt"
    "../lcs-dp-strategy.rkt")
 
   (define table
@@ -49,7 +49,7 @@
           get-tree))
 
   (define image-factory
-    (new tree-image-factory/radial%
+    (new tree-image-factory/table%
          [tree tree]))
 
   (define image
