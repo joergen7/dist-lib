@@ -31,13 +31,15 @@
 
     (inherit
      label-path
-     get-depth-factor)
-
-    (init-field
-     tree)
+     get-depth-factor
+     get-tree)
 
     (define/override (get-image)
-      (apply make-image (get-path-list (make-path) tree)))
+      (define path-list
+        (get-path-list
+         (make-path)
+         (get-tree)))
+      (apply make-image path-list))
 
     (define/private (get-path-list path tree)
       (cond
@@ -50,33 +52,37 @@
          (define lhs-depth
            (list-ref tree 1))
          (define lhs-width
-           (add1 (tree-level-right lhs)))
+           (tree-displace-left tree))
          (define rhs
            (list-ref tree 2))
          (define rhs-depth
            (list-ref tree 3))
          (define rhs-width
-           (add1 (tree-level-left rhs)))
+           (tree-displace-right tree))
          (define lhs-stem-path
            (with-path ((send path hatch))
              (turn (* 1/2 pi))
              (forward (* 0.7 lhs-width))
              (turn (* -1/2 pi))
              (forward
-              (* (get-depth-factor tree)
+              (* (get-depth-factor)
                  lhs-depth))))
          (define lhs-child-path-list
-           (get-path-list lhs-stem-path lhs))
+           (get-path-list
+            lhs-stem-path
+            lhs))
          (define rhs-stem-path
            (with-path ((send path hatch))
              (turn (* -1/2 pi))
              (forward (* 0.7 rhs-width))
              (turn (* 1/2 pi))
              (forward
-              (* (get-depth-factor tree)
+              (* (get-depth-factor)
                  rhs-depth))))
          (define rhs-child-path-list
-           (get-path-list rhs-stem-path rhs))
+           (get-path-list
+            rhs-stem-path
+            rhs))
          (append (list lhs-stem-path
                        rhs-stem-path)
                  lhs-child-path-list

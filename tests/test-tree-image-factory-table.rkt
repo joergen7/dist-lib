@@ -15,29 +15,32 @@
 #lang racket/base
 
 (module+ test
+
   (require
-   racket/class
-   paint-lib
-   "../tree-image-factory-table.rkt"
-   "../tree-image-factory-tree.rkt")
+   rackunit
+   "test-util.rkt"
+   "../tree-image-factory-table.rkt")
 
-  (define tree
-    '((("example a" 8.5 "example b" 8.5) 2.5 "example e" 11.0) 6.5 ("example c" 14.0 "example d" 14.0) 3.5))
+  (define tree-display
+    (make-tree-display tree-image-factory/table%))
 
-  (define image-factory/table
-    (new tree-image-factory/table%
-         [tree tree]))
+  (let ([tree "a"])
+    (tree-display tree))
 
-  (define image/table
-    (send image-factory/table get-image))
+  (let ([tree '("a" 2 "b" 2)])
+    (tree-display tree))
 
-  (get-bitmap image/table 400)
+  (let ([tree '(("a" 2 "b" 2) 1 "c" 3)])
+    (tree-display tree))
 
-  (define image-factory/tree
-    (new tree-image-factory/tree%
-         [tree tree]))
+  (let ([tree '(("a" 2 "b" 2) 1 ("c" 2 "d" 2) 1)])
+    (tree-display tree))
 
-  (define image/tree
-    (send image-factory/tree get-image))
+  (let ([tree '(("a" 2 "b" 2) 1 (("c" 1 "d" 1) 1 "e" 2) 1)])
+    (tree-display tree))
 
-  (get-bitmap image/tree 600))
+  (let ([tree '((("example a" 8.5 "example b" 8.5) 2.5 "example e" 11.0) 6.5 ("example c" 14.0 "example d" 14.0) 3.5)])
+    (tree-display tree))
+
+
+  )

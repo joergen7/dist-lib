@@ -18,13 +18,16 @@
  racket/class
  racket/contract
  racket/string
+ racket/draw
  rackunit
+ "../tree.rkt"
  "../distance.rkt"
  "../dp-table.rkt"
  "../string-dp-table.rkt")
 
 (provide
- make-check-dist)
+ make-check-dist
+ make-tree-display)
 
 (define/contract (make-check-dist make-dp-strategy)
   (-> (is-a?/c dp-strategy<%>) (-> string? string? distance? void?))
@@ -35,3 +38,15 @@
            [b b]
            [dp-strategy make-dp-strategy]))
     (check-= (send dp get-dist) dist 0.000001 (string-join (list a b)))))
+
+(define/contract (make-tree-display tree-image-factory-class)
+  (-> class? (-> tree/c (is-a?/c bitmap%)))
+  (lambda (tree)
+    (define image-factory
+      (new tree-image-factory-class
+           [tree tree]))
+    (define image
+      (send image-factory
+            get-image))
+    (send image
+          get-bitmap 300)))

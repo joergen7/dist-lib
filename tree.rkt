@@ -23,9 +23,9 @@
  tree-elem-list
  tree-elem-count
  tree-depth
- tree-level-left
- tree-level-right
- tree-equal?)
+ tree-equal?
+ tree-displace-left
+ tree-displace-right)
 
 (define tree/c
   (recursive-contract
@@ -54,22 +54,6 @@
      (+ (cadr tree)
         (tree-depth (car tree)))]))
 
-(define/contract (tree-level-left tree)
-  (-> tree/c natural?)
-  (cond
-    [(string? tree)
-     0]
-    [else
-     (add1 (tree-level-left (car tree)))]))
-
-(define/contract (tree-level-right tree)
-  (-> tree/c natural?)
-  (cond
-    [(string? tree)
-     0]
-    [else
-     (add1 (tree-level-right (caddr tree)))]))
-
 (define/contract (tree-equal? a b)
   (-> tree/c tree/c boolean?)
   (or
@@ -95,3 +79,52 @@
                            (list-ref b 0))
               (= (list-ref a 3)
                  (list-ref b 1)))))))
+
+(define/contract (tree-subtree-list-left tree)
+  (-> tree/c (listof tree/c))
+  (cond
+    [(string? tree)
+     '()]
+    [else
+     (cons tree
+           (tree-subtree-list-left (car tree)))]))
+
+(define/contract (tree-subtree-list-right tree)
+  (-> tree/c (listof tree/c))
+  (cond
+    [(string? tree)
+     '()]
+    [else
+     (cons tree
+           (tree-subtree-list-right (caddr tree)))]))
+
+    
+(define/contract (tree-displace-left tree)
+  (-> tree/c natural?)
+  (cond
+    [(string? tree)
+     0]
+    [else
+     (define lhs
+       (car tree))
+     (apply
+      +
+      1
+      (map tree-displace-right
+           (tree-subtree-list-right lhs)))]))
+
+(define/contract (tree-displace-right tree)
+  (-> tree/c natural?)
+  (cond
+    [(string? tree)
+     0]
+    [else
+     (define rhs
+       (caddr tree))
+     (apply
+      +
+      1
+      (map tree-displace-left
+           (tree-subtree-list-left rhs)))]))
+    
+      

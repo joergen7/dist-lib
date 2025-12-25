@@ -30,15 +30,15 @@
 
     (inherit
      label-path
-     get-depth-factor)
+     get-depth-factor
+     get-tree)
 
     (init-field
-     tree
-     [phi1  0.5]
-     [phi2 -0.3])
+     [phi1  0.6]
+     [phi2  -0.2])
 
     (define/override (get-image)
-      (apply make-image (get-main-path-list tree)))
+      (apply make-image (get-path-list (make-path) (get-tree))))
 
     (define/private (get-main-path-list tree)
       (cond
@@ -57,13 +57,13 @@
          (define path1
            (with-path ()
              (forward
-              (* (get-depth-factor tree)
+              (* (get-depth-factor)
                  rhs-depth))))
          (define path2
            (with-path ()
              (turn pi)
              (forward
-              (* (get-depth-factor tree)
+              (* (get-depth-factor)
                  lhs-depth))))
          (append
           (list path1
@@ -89,13 +89,13 @@
            (with-path ((hatch path))
              (turn phi1)
              (forward
-              (* (get-depth-factor tree)
+              (* (get-depth-factor)
                  lhs-depth))))
          (define path2
            (with-path ((hatch path))
              (turn phi2)
              (forward
-              (* (get-depth-factor tree)
+              (* (get-depth-factor)
                  rhs-depth))))
          (append
           (list path1

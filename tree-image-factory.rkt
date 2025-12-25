@@ -17,39 +17,13 @@
 (require
  racket/class
  paint-lib
- "tree.rkt"
- "tree-image-factory.rkt")
+ "tree.rkt")
 
 (provide
- abstract-tree-image-factory%)
+ tree-image-factory<%>)
 
-(define abstract-tree-image-factory%
-  (class* object% (tree-image-factory<%>)
-    (super-new)
-
-    (init-field
-     tree)
-
-    (init-field
-     [draw-labels #t]
-     [depth       10])
-
-    (abstract
-     get-image)
-
-    (define/public (get-tree)
-      tree)
-
-    (define/public (get-depth-factor)
-      (/ depth (tree-depth (get-tree))))
-
-    (define/public (label-path path tree)
-      (with-path (path)
-        (label
-         (if draw-labels
-             tree
-             "")
-         1)))))
-
-
-     
+(define tree-image-factory<%>
+  (interface (image-factory<%>)
+    [get-tree         (->m tree/c)]
+    [get-depth-factor (->m rational?)]
+    [label-path       (->m (is-a?/c path<%>) tree/c void?)]))
