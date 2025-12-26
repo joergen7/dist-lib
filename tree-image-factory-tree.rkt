@@ -19,6 +19,7 @@
  racket/contract
  racket/math
  paint-lib
+ "tree.rkt"
  "abstract-tree-image-factory.rkt")
 
 (provide
@@ -34,8 +35,8 @@
      get-tree)
 
     (init-field
-     [phi1  0.6]
-     [phi2  -0.2])
+     [phi1   2.4]
+     [phi2  -2.1])
 
     (define/override (get-image)
       (apply make-image (get-path-list (make-path) (get-tree))))
@@ -87,13 +88,13 @@
            (list-ref tree 3))
          (define path1
            (with-path ((hatch path))
-             (turn phi1)
+             (turn (* phi1 (/ (tree-elem-count lhs) (tree-elem-count (get-tree)))))
              (forward
               (* (get-depth-factor)
                  lhs-depth))))
          (define path2
            (with-path ((hatch path))
-             (turn phi2)
+             (turn (* phi2 (/ (tree-elem-count rhs) (tree-elem-count (get-tree)))))
              (forward
               (* (get-depth-factor)
                  rhs-depth))))
