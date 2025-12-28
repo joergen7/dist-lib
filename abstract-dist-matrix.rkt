@@ -35,7 +35,8 @@
      get-leaf-count
      get-max-dist
      get-merge-strategy
-     get-elem-tree)
+     get-elem-tree
+     filter)
 
     (define/public (get-elem-count)
       (set-count (get-elem-set)))
@@ -168,5 +169,10 @@
                (send parent get-elem-tree (cdr merge-pair))
                (- (* 0.5 d) (send parent get-depth (cdr merge-pair))))]
         [else
-         (send parent get-elem-tree a)]))))
+         (send parent get-elem-tree a)]))
+
+    (define/override (filter pred)
+      (send parent
+            filter
+            pred))))
 

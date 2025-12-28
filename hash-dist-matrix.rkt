@@ -62,6 +62,18 @@
       merge-strategy)
 
     (define/override (get-elem-tree a)
-      a)))
+      a)
+
+    (define/override (filter pred)
+      (define dist-table1
+        (for/fold ([result (hash)])
+                  ([(pair dist) (in-hash dist-table)])
+          (if (and (pred (car pair))
+                   (pred (cdr pair)))
+              (hash-set result pair dist)
+              result)))
+      (new hash-dist-matrix%
+           [dist-table     dist-table1]
+           [merge-strategy merge-strategy]))))
 
 

@@ -42,7 +42,8 @@
     [get-min-pair       (->m (cons/c string? string?))]
     [get-tree           (->m tree/c)]
     [merge              (recursive-contract (->m string? string? (is-a?/c dist-matrix<%>)))]
-    [reduce             (recursive-contract (->m (is-a?/c dist-matrix<%>)))]))
+    [reduce             (recursive-contract (->m (is-a?/c dist-matrix<%>)))]
+    [filter             (recursive-contract (->m (-> string? boolean?) (is-a?/c dist-matrix<%>)))]))
 
 (define merge-strategy<%>
   (interface ()
