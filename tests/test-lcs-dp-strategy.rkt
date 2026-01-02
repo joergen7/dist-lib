@@ -18,10 +18,7 @@
 
   (require
    racket/class
-   racket/string
-   rackunit
    "test-util.rkt"
-   "../string-dp-table.rkt"
    "../lcs-dp-strategy.rkt")
 
   (define check-dist

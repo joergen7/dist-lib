@@ -22,21 +22,22 @@
  rackunit
  "../tree.rkt"
  "../distance.rkt"
- "../dp-table.rkt"
- "../string-dp-table.rkt")
+ "../dp-strategy.rkt"
+ "../string-dp-table-factory.rkt")
 
 (provide
  make-check-dist
  make-tree-display)
 
-(define/contract (make-check-dist make-dp-strategy)
+(define/contract (make-check-dist dp-strategy)
   (-> (is-a?/c dp-strategy<%>) (-> string? string? distance? void?))
   (lambda (a b dist)
     (define dp
-      (new string-dp-table%
-           [a a]
-           [b b]
-           [dp-strategy make-dp-strategy]))
+      (send (new string-dp-table-factory%
+                 [a           a]
+                 [b           b]
+                 [dp-strategy dp-strategy])
+            get-dp-table))
     (check-= (send dp get-dist) dist 0.000001 (string-join (list a b)))))
 
 (define/contract (make-tree-display tree-image-factory-class)

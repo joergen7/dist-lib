@@ -17,18 +17,18 @@
 (require
  racket/class
  racket/math
- "distance.rkt"
- "edit-script.rkt")
+ racket/contract
+ "distance.rkt")
 
 (provide
- dp-table<%>)
+ dp-strategy<%>)
 
-
-(define dp-table<%>
+(define dp-strategy<%>
   (interface ()
-    [get-dist        (->m distance?)]
-    [get-edit-script (->m edit-script?)]
-    [get-length-a    (->m natural?)]
-    [get-length-b    (->m natural?)]
-    [get-score       (->m natural? natural? distance?)]))
-
+    [get-score (->m natural?
+                    natural?
+                    (or/c #f distance?)
+                    (or/c #f distance?)
+                    (or/c #f distance?)
+                    boolean?
+                    distance?)]))

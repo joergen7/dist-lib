@@ -16,32 +16,17 @@
 
 (require
  racket/class
- racket/stream
- "abstract-dp-table.rkt"
- "lcs-dp-strategy.rkt")
+ racket/math
+ "dp-table.rkt")
 
 (provide
- stream-dp-table%)
+ dp-table-factory<%>)
 
-(define stream-dp-table%
-  (class abstract-dp-table%
-    (super-new)
-
-    (init-field
-     a
-     b
-     [dp-strategy (new lcs-dp-strategy%)])
-
-    (define/override (get-dp-strategy)
-      dp-strategy)
-
-    (define/override (get-length-a)
-      (stream-length a))
-
-    (define/override (get-length-b)
-      (stream-length b))
-
-    (define/override (match? x y)
-      (equal? (stream-ref a x)
-              (stream-ref b y)))))
+(define dp-table-factory<%>
+  (interface ()
+    [get-dp-table    (->m (is-a?/c dp-table<%>))]
+    [get-length-a    (->m natural?)]
+    [get-length-b    (->m natural?)]
+    [match?          (->m natural? natural? boolean?)]))
+    
 

@@ -16,19 +16,26 @@
 
 (require
  racket/class
- racket/math
- "distance.rkt"
- "edit-script.rkt")
+ "abstract-dp-table.rkt")
 
 (provide
- dp-table<%>)
+ simple-dp-table%)
 
+(define simple-dp-table%
+  (class abstract-dp-table%
+    (super-new)
 
-(define dp-table<%>
-  (interface ()
-    [get-dist        (->m distance?)]
-    [get-edit-script (->m edit-script?)]
-    [get-length-a    (->m natural?)]
-    [get-length-b    (->m natural?)]
-    [get-score       (->m natural? natural? distance?)]))
+    (init-field
+     length-a
+     length-b
+     score-table)
 
+    (define/override (get-length-a)
+      length-a)
+
+    (define/override (get-length-b)
+      length-b)
+
+    (define/override (get-score x y)
+      (hash-ref score-table
+                (cons x y)))))

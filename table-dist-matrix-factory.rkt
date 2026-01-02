@@ -17,6 +17,7 @@
 (require
  racket/class
  racket/contract
+ racket/future
  "dist-matrix-factory.rkt"
  "hash-dist-matrix.rkt"
  "lcs-dp-strategy.rkt"
@@ -25,7 +26,7 @@
 (provide
  table-dist-matrix-factory%)
 
-(define/contract (table-dist-matrix-factory% dp-table-class)
+(define/contract (table-dist-matrix-factory% dp-table-factory-class)
   (-> class? class?)
   (class* object% (dist-matrix-factory<%>)
     (super-new)
@@ -36,42 +37,50 @@
      [merge-strategy (new wpgma-merge-strategy%)])
 
     (define/public (get-dist-matrix)
+
+      (define key-list
+        (hash-keys table))
+
+      (define alist-future-list
+        (make-alist-future-list key-list))
+
       (define dist-table
-        (cond
-          [(< (hash-count table) 2)
-           (hash)]
-          [else
-           (make-dist-table (hash-keys table))]))
+        (make-hash
+         (apply append
+                (map touch alist-future-list))))
+
       (new hash-dist-matrix%
            [dist-table     dist-table]
            [merge-strategy merge-strategy]))
 
-    (define/private (extend-dist-table dist-table key-a key-b)
-      (define a
-        (hash-ref table key-a))
-      (define b
-        (hash-ref table key-b))
-      (define dp
-        (new dp-table-class
-             [a a]
-             [b b]
-             [dp-strategy dp-strategy]))
-      (hash-set dist-table
-                (cons key-a key-b)
-                (send dp get-dist)))
-
-    (define/private (make-dist-table key-list)
+    (define/private (make-alist-future-list key-list)
       (cond
-        [(eq? (length key-list) 2)
-         (define key-a
-           (car key-list))
-         (define key-b
-           (cadr key-list))
-         (extend-dist-table (hash) key-a key-b)]
+        [(< (length key-list) 2)
+         '()]
         [else
-         (define key-a
-           (car key-list))
-         (for/fold ([result (make-dist-table (cdr key-list))])
-                   ([key-b (in-list (cdr key-list))])
-           (extend-dist-table result key-a key-b))]))))
+         (cons (make-alist-future dp-table-factory-class dp-strategy table (car key-list) (cdr key-list))
+               (make-alist-future-list (cdr key-list)))]))))
+
+
+(define (make-alist-future dp-table-factory-class dp-strategy table key-a key-b-list)
+  (define a
+    (hash-ref table key-a))
+  (define b-list
+    (for/list ([key-b (in-list key-b-list)])
+      (hash-ref table key-b)))
+  (future
+   (lambda ()
+     (for/list ([key-b (in-list key-b-list)]
+                [b     (in-list b-list)])
+       (make-assoc dp-table-factory-class dp-strategy key-a a key-b b)))))
+           
+(define (make-assoc dp-table-factory-class dp-strategy key-a a key-b b)
+  (cons (cons key-a key-b)
+        (send (send (new dp-table-factory-class
+                         [a           a]
+                         [b           b]
+                         [dp-strategy dp-strategy])
+                    get-dp-table)
+              get-dist)))
+
                  

@@ -20,15 +20,16 @@
    racket/class
    racket/stream
    rackunit
-   "../string-dp-table.rkt"
+   "../string-dp-table-factory.rkt"
    "../lcs-dp-strategy.rkt"
    "../levenshtein-dp-strategy.rkt")
   
   (define dp-table1
-    (new string-dp-table%
-         [a "abcd"]
-         [b "acbad"]
-         [dp-strategy (new lcs-dp-strategy%)]))
+    (send (new string-dp-table-factory%
+               [a "abcd"]
+               [b "acbad"]
+               [dp-strategy (new lcs-dp-strategy%)])
+          get-dp-table))
 
   (check-equal? (send dp-table1 get-dist)
                 2.0)
@@ -37,10 +38,11 @@
   '((match -1.0) (ins 0.0) (match -1.0) (match 0.0) (match -1.0)))
 
   (define dp-table2
-    (new string-dp-table%
-         [a "abcd"]
-         [b "acbad"]
-         [dp-strategy (new levenshtein-dp-strategy%)]))
+    (send (new string-dp-table-factory%
+               [a "abcd"]
+               [b "acbad"]
+               [dp-strategy (new levenshtein-dp-strategy%)])
+          get-dp-table))
 
   (check-equal? (send dp-table2 get-dist)
                 2.0)
@@ -49,10 +51,11 @@
                 '((match 0.0) (ins 1.0) (match 0.0) (match 1.0) (match 0.0)))
 
   (define dp-table3
-    (new string-dp-table%
-         [a "abc123"]
-         [b "321abc"]
-         [dp-strategy (new lcs-dp-strategy%)]))
+    (send (new string-dp-table-factory%
+               [a "abc123"]
+               [b "321abc"]
+               [dp-strategy (new lcs-dp-strategy%)])
+          get-dp-table))
 
   (check-equal? (send dp-table3 get-dist)
                 3.0)
@@ -61,10 +64,11 @@
                 '((ins 0.0) (ins 0.0) (ins 0.0) (match -1.0) (match -1.0) (match -1.0) (del 0.0) (del 0.0) (del 0.0)))
 
   (define dp-table4
-    (new string-dp-table%
-         [a "abc123"]
-         [b "321abc"]
-         [dp-strategy (new levenshtein-dp-strategy%)]))
+    (send (new string-dp-table-factory%
+               [a "abc123"]
+               [b "321abc"]
+               [dp-strategy (new levenshtein-dp-strategy%)])
+          get-dp-table))
 
   (check-equal? (send dp-table4 get-dist)
                 6.0)

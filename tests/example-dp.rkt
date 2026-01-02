@@ -20,7 +20,7 @@
    racket/class
    rackunit
    "../edit-script.rkt"
-   "../stream-dp-table.rkt"
+   "../stream-dp-table-factory.rkt"
    "../levenshtein-dp-strategy.rkt")
 
   (define a
@@ -30,10 +30,11 @@
     (string->list "sitting"))
 
   (define dp-table-ab
-    (new stream-dp-table%
-         [a a]
-         [b b]
-         [dp-strategy (new levenshtein-dp-strategy%)]))
+    (send (new stream-dp-table-factory%
+               [a a]
+               [b b]
+               [dp-strategy (new levenshtein-dp-strategy%)])
+          get-dp-table))
 
   (check-true
    (edit-script-equal?
@@ -50,10 +51,11 @@
     (string->list "sunday"))
 
   (define dp-table-cd
-    (new stream-dp-table%
-         [a c]
-         [b d]
-         [dp-strategy (new levenshtein-dp-strategy%)]))
+    (send (new stream-dp-table-factory%
+               [a c]
+               [b d]
+               [dp-strategy (new levenshtein-dp-strategy%)])
+          get-dp-table))
 
   (check-true
    (edit-script-equal?

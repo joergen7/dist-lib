@@ -16,23 +16,18 @@
 
 (require
  racket/class
- "abstract-dp-table.rkt"
- "lcs-dp-strategy.rkt")
+ "abstract-dp-table-factory.rkt")
 
 (provide
- string-dp-table%)
+ string-dp-table-factory%)
 
-(define string-dp-table%
-  (class abstract-dp-table%
+(define string-dp-table-factory%
+  (class abstract-dp-table-factory%
     (super-new)
 
     (init-field
      a
-     b
-     [dp-strategy (new lcs-dp-strategy%)])
-
-    (define/override (get-dp-strategy)
-      dp-strategy)
+     b)
 
     (define/override (get-length-a)
       (string-length a))

@@ -16,8 +16,8 @@
 
 (require
  racket/class
- racket/contract
- "dp-table.rkt")
+ racket/flonum
+ "dp-strategy.rkt")
 
 (provide
  lcs-dp-strategy%)
@@ -26,24 +26,14 @@
   (class* object% (dp-strategy<%>)
     (super-new)
 
-    (define/public (get-score dp-table x y)
+    (define/public (get-score length-a length-b prev-del-score prev-ins-score prev-match-score mtch)
       (cond
-        [(zero? x)
-         (get-base-score dp-table)]
-        [(zero? y)
-         (get-base-score dp-table)]
+        [(not (and prev-del-score prev-ins-score))
+         (exact->inexact
+          (max length-a
+               length-b))]
         [else
-         (if (send dp-table match? (sub1 x) (sub1 y))
-             (- (send dp-table get-score (sub1 x) (sub1 y))
-                1.0)
-             (min (send dp-table get-score (sub1 x) y)
-                  (send dp-table get-score x (sub1 y))))]))
-
-    (define/private (get-base-score dp-table)
-      (exact->inexact
-       (max (send dp-table get-length-a)
-            (send dp-table get-length-b))))))
-
-
-
-
+         (if mtch
+             (fl- prev-match-score 1.0)
+             (min prev-del-score
+                  prev-ins-score))]))))

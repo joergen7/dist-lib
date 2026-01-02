@@ -16,23 +16,19 @@
 
 (require
  racket/class
- "abstract-dp-table.rkt"
- "lcs-dp-strategy.rkt")
+ "abstract-dp-table-factory.rkt")
 
 (provide
- list-dp-table%)
+ list-dp-table-factory%)
 
-(define list-dp-table%
-  (class abstract-dp-table%
+(define list-dp-table-factory%
+  (class abstract-dp-table-factory%
     (super-new)
 
     (init-field
      a
      b
-     [dp-strategy (new lcs-dp-strategy%)])
-
-    (define/override (get-dp-strategy)
-      dp-strategy)
+     [eq equal?])
 
     (define/override (get-length-a)
       (length a))
@@ -41,6 +37,6 @@
       (length b))
 
     (define/override (match? x y)
-      (equal? (list-ref a x)
-              (list-ref b y)))))
+      (eq (list-ref a x)
+          (list-ref b y)))))
 

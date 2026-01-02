@@ -16,19 +16,28 @@
 
 (require
  racket/class
- racket/math
- "distance.rkt"
- "edit-script.rkt")
+ racket/stream
+ "abstract-dp-table-factory.rkt")
 
 (provide
- dp-table<%>)
+ stream-dp-table-factory%)
 
+(define stream-dp-table-factory%
+  (class abstract-dp-table-factory%
+    (super-new)
 
-(define dp-table<%>
-  (interface ()
-    [get-dist        (->m distance?)]
-    [get-edit-script (->m edit-script?)]
-    [get-length-a    (->m natural?)]
-    [get-length-b    (->m natural?)]
-    [get-score       (->m natural? natural? distance?)]))
+    (init-field
+     a
+     b
+     [eq equal?])
+
+    (define/override (get-length-a)
+      (stream-length a))
+
+    (define/override (get-length-b)
+      (stream-length b))
+
+    (define/override (match? x y)
+      (eq (stream-ref a x)
+          (stream-ref b y)))))
 
