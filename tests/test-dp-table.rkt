@@ -20,60 +20,56 @@
    racket/class
    racket/stream
    rackunit
-   "../string-dp-table-factory.rkt"
+   "../dp-table.rkt"
    "../lcs-dp-strategy.rkt"
    "../levenshtein-dp-strategy.rkt")
   
   (define dp-table1
-    (send (new string-dp-table-factory%
-               [a "abcd"]
-               [b "acbad"]
-               [dp-strategy (new lcs-dp-strategy%)])
-          get-dp-table))
+    (make-dp-table/string
+     "abcd"
+     "acbad"
+     #:dp-strategy (lcs-dp-strategy)))
 
-  (check-equal? (send dp-table1 get-dist)
+  (check-equal? (dp-table-dist dp-table1)
                 2.0)
 
-  (check-equal? (send dp-table1 get-edit-script)
+  (check-equal? (dp-table-edit-script dp-table1)
   '((match -1.0) (ins 0.0) (match -1.0) (match 0.0) (match -1.0)))
 
   (define dp-table2
-    (send (new string-dp-table-factory%
-               [a "abcd"]
-               [b "acbad"]
-               [dp-strategy (new levenshtein-dp-strategy%)])
-          get-dp-table))
+    (make-dp-table/string
+     "abcd"
+     "acbad"
+     #:dp-strategy (levenshtein-dp-strategy)))
 
-  (check-equal? (send dp-table2 get-dist)
+  (check-equal? (dp-table-dist dp-table2)
                 2.0)
 
-  (check-equal? (send dp-table2 get-edit-script)
+  (check-equal? (dp-table-edit-script dp-table2)
                 '((match 0.0) (ins 1.0) (match 0.0) (match 1.0) (match 0.0)))
 
   (define dp-table3
-    (send (new string-dp-table-factory%
-               [a "abc123"]
-               [b "321abc"]
-               [dp-strategy (new lcs-dp-strategy%)])
-          get-dp-table))
+    (make-dp-table/string
+     "abc123"
+     "321abc"
+     #:dp-strategy (lcs-dp-strategy)))
 
-  (check-equal? (send dp-table3 get-dist)
+  (check-equal? (dp-table-dist dp-table3)
                 3.0)
 
-  (check-equal? (send dp-table3 get-edit-script)
+  (check-equal? (dp-table-edit-script dp-table3)
                 '((ins 0.0) (ins 0.0) (ins 0.0) (match -1.0) (match -1.0) (match -1.0) (del 0.0) (del 0.0) (del 0.0)))
 
   (define dp-table4
-    (send (new string-dp-table-factory%
-               [a "abc123"]
-               [b "321abc"]
-               [dp-strategy (new levenshtein-dp-strategy%)])
-          get-dp-table))
+    (make-dp-table/string
+     "abc123"
+     "321abc"
+     #:dp-strategy (levenshtein-dp-strategy)))
 
-  (check-equal? (send dp-table4 get-dist)
+  (check-equal? (dp-table-dist dp-table4)
                 6.0)
 
-  (check-equal? (send dp-table4 get-edit-script)
+  (check-equal? (dp-table-edit-script dp-table4)
                 '((match 1.0) (match 1.0) (match 1.0) (match 1.0) (match 1.0) (match 1.0))))
 
          

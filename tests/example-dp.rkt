@@ -20,7 +20,7 @@
    racket/class
    rackunit
    "../edit-script.rkt"
-   "../stream-dp-table-factory.rkt"
+   "../dp-table.rkt"
    "../levenshtein-dp-strategy.rkt")
 
   (define a
@@ -30,19 +30,18 @@
     (string->list "sitting"))
 
   (define dp-table-ab
-    (send (new stream-dp-table-factory%
-               [a a]
-               [b b]
-               [dp-strategy (new levenshtein-dp-strategy%)])
-          get-dp-table))
+    (make-dp-table/stream
+     a
+     b
+     #:dp-strategy (levenshtein-dp-strategy)))
 
   (check-true
    (edit-script-equal?
-    (send dp-table-ab get-edit-script)
+    (dp-table-edit-script dp-table-ab)
     '((match 1.0) (match 0.0) (match 0.0) (match 0.0) (match 1.0) (match 0.0) (ins 1.0))))
 
-  (check-equal? (send dp-table-ab get-dist) 3.0)
-  (check-equal? (edit-script-dist (send dp-table-ab get-edit-script)) 3.0)
+  (check-equal? (dp-table-dist dp-table-ab) 3.0)
+  (check-equal? (edit-script-dist (dp-table-edit-script dp-table-ab)) 3.0)
 
   (define c
     (string->list "saturday"))
@@ -51,17 +50,16 @@
     (string->list "sunday"))
 
   (define dp-table-cd
-    (send (new stream-dp-table-factory%
-               [a c]
-               [b d]
-               [dp-strategy (new levenshtein-dp-strategy%)])
-          get-dp-table))
+    (make-dp-table/stream
+     c
+     d
+     #:dp-strategy (levenshtein-dp-strategy)))
 
   (check-true
    (edit-script-equal?
-    (send dp-table-cd get-edit-script)
+    (dp-table-edit-script dp-table-cd)
     '((match 0.0) (del 1.0) (del 1.0) (match 0.0) (match 1.0) (match 0.0) (match 0.0) (match 0.0))))
 
-  (check-equal? (send dp-table-cd get-dist) 3.0)
-  (check-equal? (edit-script-dist (send dp-table-cd get-edit-script)) 3.0)
+  (check-equal? (dp-table-dist dp-table-cd) 3.0)
+  (check-equal? (edit-script-dist (dp-table-edit-script dp-table-cd)) 3.0)
   )

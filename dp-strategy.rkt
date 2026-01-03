@@ -21,14 +21,13 @@
  "distance.rkt")
 
 (provide
- dp-strategy<%>)
+ dp-strategy/c)
 
-(define dp-strategy<%>
-  (interface ()
-    [get-score (->m natural?
-                    natural?
-                    (or/c #f distance?)
-                    (or/c #f distance?)
-                    (or/c #f distance?)
-                    boolean?
-                    distance?)]))
+(define dp-strategy/c
+  (-> natural?
+      natural?
+      (or/c #f distance?)
+      (or/c #f distance?)
+      (or/c #f distance?)
+      boolean?
+      distance?))

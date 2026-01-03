@@ -23,22 +23,21 @@
  "../tree.rkt"
  "../distance.rkt"
  "../dp-strategy.rkt"
- "../string-dp-table-factory.rkt")
+ "../dp-table.rkt")
 
 (provide
  make-check-dist
  make-tree-display)
 
 (define/contract (make-check-dist dp-strategy)
-  (-> (is-a?/c dp-strategy<%>) (-> string? string? distance? void?))
+  (-> dp-strategy/c (-> string? string? distance? void?))
   (lambda (a b dist)
     (define dp
-      (send (new string-dp-table-factory%
-                 [a           a]
-                 [b           b]
-                 [dp-strategy dp-strategy])
-            get-dp-table))
-    (check-= (send dp get-dist) dist 0.000001 (string-join (list a b)))))
+      (make-dp-table/string
+       a
+       b
+       #:dp-strategy dp-strategy))
+    (check-= (dp-table-dist dp) dist 0.000001 (string-join (list a b)))))
 
 (define/contract (make-tree-display tree-image-factory-class)
   (-> class? (-> tree/c (is-a?/c bitmap%)))

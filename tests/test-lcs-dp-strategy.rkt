@@ -23,7 +23,7 @@
 
   (define check-dist
     (make-check-dist
-     (new lcs-dp-strategy%)))
+     (lcs-dp-strategy)))
 
   (check-dist "" "" 0.0)
   (check-dist "" "a" 1.0)

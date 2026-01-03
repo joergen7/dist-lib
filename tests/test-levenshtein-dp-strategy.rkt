@@ -23,7 +23,7 @@
 
   (define check-dist
     (make-check-dist
-     (new levenshtein-dp-strategy%)))
+     (levenshtein-dp-strategy)))
     
 
   (check-dist "" "" 0.0)

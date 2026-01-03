@@ -20,7 +20,7 @@
    racket/class
    rackunit
    "../table-dist-matrix-factory.rkt"
-   "../string-dp-table-factory.rkt"
+   "../dp-table.rkt"
    "../tree-image-factory-tree.rkt"
    "../lcs-dp-strategy.rkt")
 
@@ -36,9 +36,9 @@
           "gugu" "gugu"))
 
   (define dist-matrix-factory
-    (new (table-dist-matrix-factory% string-dp-table-factory%)
+    (new (table-dist-matrix-factory% make-dp-table/string)
          [table table]
-         [dp-strategy (new lcs-dp-strategy%)]))
+         [dp-strategy (lcs-dp-strategy)]))
 
   (define dist-matrix
     (send dist-matrix-factory

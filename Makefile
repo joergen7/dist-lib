@@ -3,23 +3,23 @@ DEPS-FLAGS  := --check-pkg-deps --unused-pkg-deps
 JOBS        := 16
 
 .PHONY: all
-all: setup
+all: setup test
 
 .PHONY: install
 install:
-	raco pkg install -j $(JOBS) --auto
+	raco pkg install --auto
 
 .PHONY: remove
 remove:
-	raco pkg remove -j $(JOBS) $(PKG)
+	raco pkg remove $(PKG)
 
 .PHONY: setup
 setup:
-	raco setup -j $(JOBS) --tidy $(DEPS-FLAGS) --pkgs $(PKG)
+	raco setup -j 1 --tidy $(DEPS-FLAGS) --pkgs $(PKG)
 
 .PHONY: clean
 clean:
-	raco setup -j $(JOBS) --fast-clean --pkgs $(PKG)
+	raco setup --fast-clean --pkgs $(PKG)
 	$(RM) -r coverage
 	$(RM) -r `find ./ -type d -name compiled`
 
